@@ -1,0 +1,13 @@
+name: Test scanner action
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run scanner from Marketplace
+        uses: AsherLucas/llm-app-security-scanner@v0.1.0
+        with:
+          path: .
+      - name: Check SARIF report was produced
+        run: test -s report.sarif && grep -q "SHELL" report.sarif || grep -q "results" report.sarif
